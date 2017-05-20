@@ -4,13 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JPanel;
 
-public class WordDCPanel extends JPanel implements ComponentListener {
+public class AltWordDCPanel extends JPanel implements ComponentListener {
 	
 	private String[] words;
     private String currentInput = "";
@@ -25,7 +24,7 @@ public class WordDCPanel extends JPanel implements ComponentListener {
     private int xPadding = 0;
     private int textWidth = 0;
     
-    public WordDCPanel(){
+    public AltWordDCPanel(){
     	this.addComponentListener(this);
     	this.currentInput = "";
     	this.currentWord = 0;

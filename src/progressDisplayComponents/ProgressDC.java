@@ -2,13 +2,13 @@ package progressDisplayComponents;
 
 import javax.swing.JPanel;
 
-import core.ClientTypingLogic;
 import core.DisplayComponent;
+import core.TypingLogic;
 
 public class ProgressDC implements DisplayComponent {
 	
 	private ProgressDCPanel panel;
-	private ClientTypingLogic ctl;
+	private TypingLogic tl;
 	
 	public ProgressDC(){
 		panel = new ProgressDCPanel();
@@ -20,13 +20,13 @@ public class ProgressDC implements DisplayComponent {
 	}
 	
 	@Override
-	public void setClientTypingLogic(ClientTypingLogic ctl) {
-		this.ctl = ctl;
+	public void setClientTypingLogic(TypingLogic tl) {
+		this.tl = tl;
 	}
 	
 	@Override
 	public void update() {
-		panel.update(ctl.getProgress(),ctl.getProgessesExcept());
+		panel.update(tl.getProgress(),tl.getOtherProgresses(),tl.getWPM(),tl.getOtherWPMs());
 	}
 	
 	@Override

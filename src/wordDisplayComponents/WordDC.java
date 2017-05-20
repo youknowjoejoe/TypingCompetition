@@ -1,40 +1,60 @@
 package wordDisplayComponents;
 
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
-import core.ClientTypingLogic;
 import core.DisplayComponent;
+import core.TypingLogic;
+import test.Debugger;
 
-public class WordDC implements DisplayComponent, KeyListener {
+public class WordDC implements DisplayComponent, KeyListener, KeyEventDispatcher {
 	
 	private WordDCPanel panel;
-	private ClientTypingLogic ctl;
-	private String typed;
+	private TypingLogic tl;
+	private String typed = "";
+	private String typedOld = "";
 	private String[] words;
 	
 	public WordDC(){
 		panel = new WordDCPanel();
+		//panel.addKeyListener(this);
+		panel.setFocusable(true);
+		panel.setRequestFocusEnabled(true);
+		panel.requestFocus();
+		panel.setEnabled(true);
 	}
 	
 	@Override
 	public void initialize() {
-		words = ctl.getWords();
+		words = tl.getWords();
 		panel.initialize(words);
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    	manager.addKeyEventDispatcher(this);
 	}
 	
 	@Override
-	public void setClientTypingLogic(ClientTypingLogic ctl) {
-		this.ctl = ctl;
+	public void setClientTypingLogic(TypingLogic tl) {
+		this.tl = tl;
 	}
 	
 	@Override
 	public void update() {
-		ctl.update(typed);
+		//panel.requestFocus();
+		typedOld = typed;
 		typed = "";
-		panel.update(ctl.getCurrentInput(),ctl.getCurrentIndex());
+		//Debugger.setDisplayString3(typed);
+		//WDebugger.setDisplayString2(typedOld);
+		/*try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
+		tl.update(typedOld);
+		panel.update(tl.getCurrentInput(),tl.getCurrentWord());
 	}
 	
 	@Override
@@ -55,5 +75,14 @@ public class WordDC implements DisplayComponent, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		typed += Character.toString(e.getKeyChar());
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent e) {
+		if(e.getID() == KeyEvent.KEY_TYPED /*&& e.getKeyCode() != KeyEvent.VK_SHIFT*/){
+			//Debugger.setDisplayString(Character.toString(e.getKeyChar()));
+			typed += Character.toString(e.getKeyChar());
+		}
+		return false;
 	}
 }
