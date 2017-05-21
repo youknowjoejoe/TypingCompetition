@@ -11,6 +11,7 @@ public class IntervalUpdater implements Runnable {
 	
 	public IntervalUpdater(double dt){
 		ius = new ArrayList<IntervalUpdate>();
+		this.dt = dt;
 	}
 	
 	public void addUpdate(IntervalUpdate iu){
@@ -25,11 +26,16 @@ public class IntervalUpdater implements Runnable {
 	public void run() {
 		double oldTime = Time.getTime();
 		double currentTime = oldTime;
+		double accumulator = 0.0;
 		double timePassed = 0.0;
 		while(running){
-			ius.forEach((iu)->iu.update());
+			while(accumulator >= dt){
+				ius.forEach((iu)->iu.update());
+				accumulator--;
+			}
 			currentTime = Time.getTime();
 			timePassed = currentTime-oldTime;
+			accumulator += timePassed;
 			oldTime = currentTime;
 			try {
 				Thread.sleep((int)((timePassed < dt) ? (dt-timePassed)*1000 : 0));

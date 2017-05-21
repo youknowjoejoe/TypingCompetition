@@ -7,6 +7,7 @@ import javax.swing.Timer;
 import core.TypingLogic;
 import test.Debugger;
 import util.Belt;
+import util.MathUtils;
 import util.Time;
 
 public class StandardTypingLogic implements TypingLogic, ActionListener{
@@ -69,25 +70,60 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	
 	private void finishWord(){
 		
-		int localCorrectChars = getCorrectChars(currentInput,getWord(currentWordIndex));
 		String currentWord = getWord(currentWordIndex);
+		int localCorrectChars = currentWord.length()-getLevenshteinDistnace(currentInput,currentWord);
 		
 		double time = Time.getTime();
 		previousTypedWords.rotate(1);
 		previousTypedWords.set(0, new TypedWord(time,localCorrectChars,currentWord.length()));
 		
-		charactersCorrect+=getCorrectChars(currentInput,currentWord);
+		charactersCorrect+=localCorrectChars;
 		totalCharacters+=currentWord.length();
 		
 		currentInput = "";
 	}
 	
-	private int getCorrectChars(String a, String b){
+	public static int getCorrectChars1(String a, String b){
 		int count = 0;
-		for(int rep = 0; rep < Math.min(a.length(), b.length())-1; rep++){
+		for(int rep = 0; rep < Math.min(a.length(), b.length()); rep++){
 			if(a.substring(rep,rep+1).equals(b.substring(rep,rep+1))) count++;
 		}
 		return (count);
+	}
+	
+	public static int getCorrectChars2(String a, String b){
+		if(a.length() == 0 || b.length() == 0) return 0;
+		if(a.equals(b)) return a.length();
+		return Math.max(getCorrectChars2(a.substring(1),b), getCorrectChars2(a,b.substring(1)));
+	}
+	
+	public static int getCorrectChars3(String a, String b){
+		return Math.max(getCorrectChars1(a,b), getCorrectChars2(a,b));
+	}
+	
+	public static int getLevenshteinDistnace(String a, String b){
+		int[][] values = new int[a.length()+1][b.length()+1];
+		values[0][0] = 0;
+		for(int x = 1; x < values.length; x++){
+			values[x][0] = x;
+		}
+		for(int y = 1; y < values[0].length; y++){
+			values[0][y] = y;
+		}
+		for(int x = 1; x < values.length; x++){
+			for(int y = 1; y < values[0].length; y++){
+				int substitutionCost = 0;
+				if(!a.substring(x-1,x).equals(b.substring(y-1,y))){
+					substitutionCost = 1;
+				}
+				values[x][y] = MathUtils.min(
+							values[x-1][y]+1,
+							values[x][y-1]+1,
+							values[x-1][y-1]+substitutionCost
+						);
+			}
+		}
+		return values[a.length()][b.length()];
 	}
 	
 	private double calculateWPM(int correct, int total, int words, double time){
@@ -99,7 +135,7 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	private void start(){
 		double startTime = Time.getTime();
 		for(int rep = 0; rep < previousTypedWords.length(); rep++){
-			previousTypedWords.set(rep, new TypedWord(startTime,0,1));
+			previousTypedWords.set(rep, new TypedWord(startTime,0,5));
 		}
 		started = true;
 		timer.setInitialDelay(0);
@@ -145,7 +181,7 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	
 	@Override
 	public double[] getOtherWPMs() {
-		return null;
+		return new double[0];
 	}
 	
 	@Override
@@ -155,7 +191,7 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	
 	@Override
 	public double[] getOtherProgresses() {
-		return null;
+		return new double[0];
 	}
 	
 	@Override
