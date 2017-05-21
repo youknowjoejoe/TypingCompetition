@@ -5,8 +5,8 @@ public interface TypingLogic {
     public double[] getOtherWPMs();
     public double getProgress();
     public double[] getOtherProgresses();
-    public String[] getWords();
-    public void update(String input);
+    public String getWord(int index);
+    public void addInput(String input);
     public String getCurrentInput();
     public int getCurrentWord();
 }

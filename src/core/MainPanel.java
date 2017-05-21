@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-public class MainPanel extends JPanel implements Runnable {
+public class MainPanel extends JPanel {
 
 	/**
 	 * 
@@ -54,32 +54,7 @@ public class MainPanel extends JPanel implements Runnable {
 	private void initializeDisplayComponents() {
 		for(DisplayComponent dc: dcs){
 			dc.setClientTypingLogic(tl);
-		    dc.initialize();
-		}
-	}
-	
-	public void update(){
-	    repaint();
-		for(DisplayComponent dc: dcs){
-		    dc.update();
-		}
-	}
-
-	@Override
-	public void run() {
-		double oldTime = System.nanoTime();
-		double currentTime = oldTime;
-		double timePassed = 0;
-		while(running){
-			update();
-			currentTime = System.nanoTime();
-			timePassed = currentTime-oldTime;
-			oldTime = currentTime;
-			try {
-				Thread.sleep((int)((timePassed < dt) ? (dt-timePassed)*1000 : 0));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			dc.initialize();
 		}
 	}
 }

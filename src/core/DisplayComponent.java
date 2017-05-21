@@ -6,7 +6,6 @@ public interface DisplayComponent {
 	public void initialize();
 	
 	public JPanel getPanel();
-	public void update();
 	public void setClientTypingLogic(TypingLogic tl);
 	
 }

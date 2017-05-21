@@ -2,19 +2,18 @@ package test;
 
 import core.MainPanel;
 import progressDisplayComponents.ProgressDC;
-import typingLogics.TestTypingLogic;
-import wordDisplayComponents.WordDC;
+import typingLogics.StandardTypingLogic;
+import util.IntervalUpdater;
+import wordDisplayComponents.WordDisplayComponent;
 
 import javax.swing.JFrame;
 
 public class Main {
 	
 	public static void main(String[] args){
-		//Debugger.initialize();
-		
-		TestTypingLogic tl = new TestTypingLogic();
+		StandardTypingLogic tl = new StandardTypingLogic();
 		ProgressDC tpdc = new ProgressDC();
-		WordDC twdc = new WordDC();
+		WordDisplayComponent twdc = new WordDisplayComponent();
 		MainPanel mp = new MainPanel(800,600,tpdc,twdc,tl);
 		
 		JFrame window = new JFrame("Typing Competition");
@@ -23,6 +22,9 @@ public class Main {
 		window.setVisible(true);
 		window.add(mp);
 		window.pack();
-		(new Thread(mp)).run();
+		
+		IntervalUpdater updater = new IntervalUpdater(1.0/10.0);
+		updater.addUpdate(tpdc);
+		updater.start();
 	}
 }

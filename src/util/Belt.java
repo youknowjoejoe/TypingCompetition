@@ -1,5 +1,7 @@
 package util;
 
+import java.util.function.Consumer;
+
 public class Belt<T> {
 	private int offset;
 	private T[] array;
@@ -10,6 +12,7 @@ public class Belt<T> {
 	}
 	
 	public T get(int index){
+		if((index+offset)%array.length < 0) System.out.println(offset);
 		return array[(index+offset)%array.length];
 	}
 	
@@ -18,12 +21,19 @@ public class Belt<T> {
 	}
 	
 	public void rotate(int n){
-		offset=(offset-n)%array.length;
-		if(offset<0) offset +=array.length;
+		int temp = (offset-n)%array.length;
+		if(temp<0) temp +=array.length;
+		offset = temp;
 	}
 	
 	public int length(){
 		return array.length;
+	}
+	
+	public void forEach(Consumer<? super T> c){
+		for(int rep = 0; rep < array.length; rep++){
+			c.accept(get(rep));
+		}
 	}
 	
 	@Override

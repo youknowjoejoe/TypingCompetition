@@ -4,8 +4,9 @@ import javax.swing.JPanel;
 
 import core.DisplayComponent;
 import core.TypingLogic;
+import util.IntervalUpdate;
 
-public class ProgressDC implements DisplayComponent {
+public class ProgressDC implements DisplayComponent, IntervalUpdate{
 	
 	private ProgressDCPanel panel;
 	private TypingLogic tl;
