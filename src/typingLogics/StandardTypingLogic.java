@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 import core.TypingLogic;
-import test.Debugger;
+//import test.Debugger;
 import util.Belt;
 import util.MathUtils;
 import util.Time;
@@ -19,6 +19,7 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	private int totalCharacters = 0;
 	
 	private Timer timer;
+	private double startTime = 0;
 	private double timeInterval;
 	private double elapsedTime = 0;
 	private double timeLimit;
@@ -30,9 +31,10 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	
 	public StandardTypingLogic(){
 		this(
-				new LoopingTest("It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair"),
-				1.0,
-				20.0
+				//new LoopingTest("It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair"),
+				new LoopingTest("the be to of and a in that have I it for not on with as you do at this but his by from they we say her she or an will my one all would there their  what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way  even new want because any these give day most us"),
+				0.25,
+				30.0
 			);
 	}
 	
@@ -42,7 +44,7 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 		this.timeLimit = timeLimit;
 		timer = new Timer((int)(this.timeInterval*1000.0),this);
 		
-		previousTypedWords = new Belt<TypedWord>(new TypedWord[30]);
+		previousTypedWords = new Belt<TypedWord>(new TypedWord[5]);
 	}
 	
 	@Override
@@ -71,7 +73,7 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	private void finishWord(){
 		
 		String currentWord = getWord(currentWordIndex);
-		int localCorrectChars = currentWord.length()-getLevenshteinDistnace(currentInput,currentWord);
+		int localCorrectChars = Math.max(0,currentWord.length()-getLevenshteinDistnace(currentInput,currentWord));
 		
 		double time = Time.getTime();
 		previousTypedWords.rotate(1);
@@ -79,6 +81,10 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 		
 		charactersCorrect+=localCorrectChars;
 		totalCharacters+=currentWord.length();
+		
+		//include space in between
+		charactersCorrect++;
+		totalCharacters++;
 		
 		currentInput = "";
 	}
@@ -127,13 +133,16 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	}
 	
 	private double calculateWPM(int correct, int total, int words, double time){
-		double averageWordLength = ((double)total)/((double)words);
+		//double averageWordLength = ((double)total)/((double)words);
+		double averageWordLength = 5.0;
 		double timeInMinutes = time/60.0;
-		return ((double)correct/averageWordLength)/timeInMinutes;
+		double product = averageWordLength*timeInMinutes;
+		if(product == 0) return 0;
+		return ((double)correct/product);
 	}
 	
 	private void start(){
-		double startTime = Time.getTime();
+		startTime = Time.getTime();
 		for(int rep = 0; rep < previousTypedWords.length(); rep++){
 			previousTypedWords.set(rep, new TypedWord(startTime,0,5));
 		}
@@ -151,7 +160,9 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	@Override
 	public double getWPM() {
 		if(!started) return 0;
-		if(finished) return getAverageWPM();
+		if(finished){
+			return getAverageWPM();
+		}
 		return getCurrentWPM();
 	}
 	
@@ -160,7 +171,8 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	}
 	
 	public double getCurrentWPM(){
-		return calculateWPM(sumCorrectCharacters(),sumTotalCharacters(),previousTypedWords.length(),previousTypedWords.get(0).getTime()-previousTypedWords.get(previousTypedWords.length()-1).getTime());
+		//return calculateWPM(sumCorrectCharacters(),sumTotalCharacters(),previousTypedWords.length(),previousTypedWords.get(0).getTime()-previousTypedWords.get(previousTypedWords.length()-1).getTime());
+		return calculateWPM(sumCorrectCharacters(),sumTotalCharacters(),previousTypedWords.length(),(startTime+elapsedTime)-previousTypedWords.get(previousTypedWords.length()-1).getTime());
 	}
 	
 	private int sumCorrectCharacters(){
