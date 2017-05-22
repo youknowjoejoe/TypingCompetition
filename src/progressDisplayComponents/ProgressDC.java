@@ -8,11 +8,11 @@ import util.IntervalUpdate;
 
 public class ProgressDC implements DisplayComponent, IntervalUpdate{
 	
-	private AltProgressDCPanel panel;
+	private ProgressDCPanel panel;
 	private TypingLogic tl;
 	
 	public ProgressDC(){
-		panel = new AltProgressDCPanel();
+		panel = new ProgressDCPanel();
 	}
 	
 	@Override

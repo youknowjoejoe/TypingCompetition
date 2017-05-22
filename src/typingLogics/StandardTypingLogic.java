@@ -29,11 +29,11 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	private boolean started = false;
 	private boolean finished = false;
 	
+	
 	public StandardTypingLogic(){
 		this(
-				//new LoopingTest("It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair"),
-				new LoopingTest("the be to of and a in that have I it for not on with as you do at this but his by from they we say her she or an will my one all would there their  what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way  even new want because any these give day most us"),
-				0.25,
+				new LoopingTest[]{LoopingTest.standard,LoopingTest.rickAstley,LoopingTest.taleOfTwoCities}[(int)(Math.random()*3)],
+				0.1,
 				30.0
 			);
 	}
@@ -51,7 +51,6 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	public void addInput(String input) {
 		if(!finished){
 			processLetter(input.substring(0,1));
-			if(elapsedTime >= timeLimit) stop();
 		}
 	}
 	
@@ -224,5 +223,6 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		elapsedTime+=timeInterval;
+		if(elapsedTime >= timeLimit) stop();
 	}
 }

@@ -23,7 +23,7 @@ public class Main {
 		window.add(mp);
 		window.pack();
 		
-		IntervalUpdater updater = new IntervalUpdater(1.0/30.0);
+		IntervalUpdater updater = new IntervalUpdater(1.0/10.0);
 		updater.addUpdate(tpdc);
 		updater.start();
 	}

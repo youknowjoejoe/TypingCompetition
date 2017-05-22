@@ -31,7 +31,7 @@ public class IntervalUpdater implements Runnable {
 		while(running){
 			while(accumulator >= dt){
 				ius.forEach((iu)->iu.update());
-				accumulator--;
+				accumulator-=dt;
 			}
 			currentTime = Time.getTime();
 			timePassed = currentTime-oldTime;
