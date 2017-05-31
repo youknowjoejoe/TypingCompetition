@@ -32,7 +32,8 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	
 	public StandardTypingLogic(){
 		this(
-				new LoopingTest[]{LoopingTest.standard,LoopingTest.rickAstley,LoopingTest.taleOfTwoCities}[(int)(Math.random()*3)],
+				//new LoopingTest[]{LoopingTest.standard,LoopingTest.rickAstley,LoopingTest.taleOfTwoCities,LoopingTest.subliminalMessage}[(int)(Math.random()*4)],
+				LoopingTest.standard,
 				0.1,
 				30.0
 			);
@@ -73,17 +74,17 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 		
 		String currentWord = getWord(currentWordIndex);
 		int localCorrectChars = Math.max(0,currentWord.length()-getLevenshteinDistnace(currentInput,currentWord));
+		int spaceBonus = 0;
+		if(localCorrectChars >= 1){
+			spaceBonus++;
+		}
 		
 		double time = Time.getTime();
 		previousTypedWords.rotate(1);
-		previousTypedWords.set(0, new TypedWord(time,localCorrectChars,currentWord.length()));
+		previousTypedWords.set(0, new TypedWord(time,localCorrectChars+spaceBonus,currentWord.length()));
 		
-		charactersCorrect+=localCorrectChars;
-		totalCharacters+=currentWord.length();
-		
-		//include space in between
-		charactersCorrect++;
-		totalCharacters++;
+		charactersCorrect+=localCorrectChars+spaceBonus;
+		totalCharacters+=currentWord.length()+1;
 		
 		currentInput = "";
 	}

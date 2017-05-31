@@ -16,8 +16,9 @@ import javax.swing.JPanel;
 import core.DisplayComponent;
 import core.TypingLogic;
 import test.Debugger;
+import util.IntervalUpdate;
 
-public class WordDisplayComponent extends JPanel implements DisplayComponent, KeyEventDispatcher, ComponentListener{
+public class WordDisplayComponent1 extends JPanel implements DisplayComponent, IntervalUpdate, KeyEventDispatcher, ComponentListener{
 	
 	private boolean started = false;
 	
@@ -28,11 +29,18 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
 	private int xPadding;
 	private int textWidth;
 	
+	private double currentWordX;
+	
 	private Color clearColor = Color.white;
     private Color textColor = Color.black;
     private Font font = new Font("Georgia", Font.PLAIN, 48);
-	
-    public WordDisplayComponent(){
+    
+    private String displayText = "";
+    
+    private double weight1 = 1.0;
+    private double weight2 = 3.0;
+    
+    public WordDisplayComponent1(){
     	this.addComponentListener(this);
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
     	manager.addKeyEventDispatcher(this);
@@ -77,15 +85,19 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
         g2d.setColor(textColor);
         g2d.setFont(font);
 		
-        int currentWord = tl.getCurrentWord();
+        int currentWordIndex = tl.getCurrentWord();
+        String currentWord = tl.getWord(currentWordIndex);
         
-		String tempText = "";
-        String displayText = "";
-        for(int tempWord = currentWord; g.getFontMetrics().stringWidth(tempText) < textWidth; tempWord++){
+        currentWordX = ((g.getFontMetrics().stringWidth(displayText.substring(0,Math.max(0,displayText.indexOf(currentWord))))+xPadding)*weight1+currentWordX*weight2)/(weight1+weight2);
+        
+        String tempText = "";
+        displayText = "";
+        for(int tempWord = currentWordIndex; g.getFontMetrics().stringWidth(tempText) < textWidth; tempWord++){
         	displayText = tempText;
         	tempText += tl.getWord(tempWord) + " ";
         }
-        g2d.drawString(displayText, xPadding, 75);
+        
+        g2d.drawString(displayText, (int)currentWordX, 75);
         g2d.drawString(tl.getCurrentInput(), xPadding, 125);
 	}
 
@@ -104,12 +116,18 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
 		this.width = this.getWidth();
         this.height = this.getHeight();
         this.xPadding = (int)(width*0.1);
+        this.currentWordX = xPadding;
         this.textWidth = width-(2*xPadding);
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 		
+	}
+
+	@Override
+	public void update() {
+		repaint();
 	}
 	
 }

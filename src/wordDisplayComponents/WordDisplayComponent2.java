@@ -16,8 +16,9 @@ import javax.swing.JPanel;
 import core.DisplayComponent;
 import core.TypingLogic;
 import test.Debugger;
+import util.IntervalUpdate;
 
-public class WordDisplayComponent extends JPanel implements DisplayComponent, KeyEventDispatcher, ComponentListener{
+public class WordDisplayComponent2 extends JPanel implements DisplayComponent, IntervalUpdate, KeyEventDispatcher, ComponentListener{
 	
 	private boolean started = false;
 	
@@ -30,9 +31,19 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
 	
 	private Color clearColor = Color.white;
     private Color textColor = Color.black;
+    private Color highlightColor = Color.green;
     private Font font = new Font("Georgia", Font.PLAIN, 48);
-	
-    public WordDisplayComponent(){
+    
+    private int startIndex;
+    private int endIndex;
+    
+    private String displayText;
+    private String displayText2;
+    
+    private int wordX;
+    private int wordWidth;
+    
+    public WordDisplayComponent2(){
     	this.addComponentListener(this);
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
     	manager.addKeyEventDispatcher(this);
@@ -40,6 +51,11 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
     
 	@Override
 	public void initialize() {
+		startIndex = -1;
+		endIndex = -1;
+		displayText = "";
+		wordX = 0;
+		wordWidth = 0;
 		started = true;
 	}
 	
@@ -76,17 +92,45 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
         
         g2d.setColor(textColor);
         g2d.setFont(font);
-		
-        int currentWord = tl.getCurrentWord();
         
-		String tempText = "";
-        String displayText = "";
-        for(int tempWord = currentWord; g.getFontMetrics().stringWidth(tempText) < textWidth; tempWord++){
-        	displayText = tempText;
+        int currentWordIndex = tl.getCurrentWord();
+        String currentWord = tl.getWord(currentWordIndex);
+        if(textWidth < 1){
+        	displayText = "";
+        	displayText2 = "";
+        } else while(!(currentWordIndex >= startIndex && currentWordIndex <= endIndex)){
+        	displayText = "";
+        	startIndex = endIndex+1;
+        	//System.out.println(startIndex);
+        	String tempText = "";
+            for(int tempWord = startIndex; g.getFontMetrics().stringWidth(tempText) < textWidth; tempWord++){
+            	endIndex = tempWord;
+            	displayText = tempText;
+            	tempText += tl.getWord(tempWord) + " ";
+            }
+            endIndex--;
+            tempText = "";
+            displayText2 = "";
+            for(int tempWord = endIndex+1; g.getFontMetrics().stringWidth(tempText) < textWidth; tempWord++){
+            	displayText2 = tempText;
+            	tempText += tl.getWord(tempWord) + " ";
+            }
+        }
+        String tempText = "";
+        for(int tempWord = startIndex; tempWord < currentWordIndex; tempWord++){
         	tempText += tl.getWord(tempWord) + " ";
         }
-        g2d.drawString(displayText, xPadding, 75);
-        g2d.drawString(tl.getCurrentInput(), xPadding, 125);
+        wordX = g.getFontMetrics().stringWidth(tempText);
+        wordWidth = g.getFontMetrics().stringWidth(currentWord);
+        
+        g2d.setColor(highlightColor);
+        g2d.fillRect(wordX+xPadding, 0, wordWidth, 50);
+        
+        g2d.setColor(textColor);
+        g2d.setFont(font);
+        g2d.drawString(displayText, (int)xPadding, 50);
+        g2d.drawString(displayText2, (int)xPadding, 100);
+        g2d.drawString(tl.getCurrentInput(), xPadding, 150);
 	}
 
 	@Override
@@ -103,13 +147,18 @@ public class WordDisplayComponent extends JPanel implements DisplayComponent, Ke
 	public void componentResized(ComponentEvent e) {
 		this.width = this.getWidth();
         this.height = this.getHeight();
-        this.xPadding = (int)(width*0.1);
+        this.xPadding = width/10;
         this.textWidth = width-(2*xPadding);
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 		
+	}
+
+	@Override
+	public void update() {
+		repaint();
 	}
 	
 }
