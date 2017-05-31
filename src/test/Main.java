@@ -1,5 +1,12 @@
 package test;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 import core.MainPanel;
 import progressDisplayComponents.ProgressDC;
 import typingLogics.StandardTypingLogic;

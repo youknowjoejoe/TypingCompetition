@@ -1,5 +1,12 @@
 package util;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 public class MathUtils {
 	public static int max(int...values){
 		int max = values[0];

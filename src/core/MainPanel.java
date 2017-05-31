@@ -1,4 +1,12 @@
 package core;
+
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;

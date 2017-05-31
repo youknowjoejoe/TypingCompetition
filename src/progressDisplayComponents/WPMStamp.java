@@ -1,5 +1,12 @@
 package progressDisplayComponents;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 public class WPMStamp {
 	private double progress;
 	private double wpm;

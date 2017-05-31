@@ -1,5 +1,12 @@
 package core;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 public interface TypingLogic {
     public double getWPM();
     public double[] getOtherWPMs();

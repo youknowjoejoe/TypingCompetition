@@ -1,5 +1,12 @@
 package typingLogics;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

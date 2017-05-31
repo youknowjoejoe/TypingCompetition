@@ -1,5 +1,12 @@
 package wordDisplayComponents;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -10,15 +17,15 @@ import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
 import core.DisplayComponent;
 import core.TypingLogic;
-import test.Debugger;
 import util.IntervalUpdate;
 
-public class WordDisplayComponent1 extends JPanel implements DisplayComponent, IntervalUpdate, KeyEventDispatcher, ComponentListener{
+public class WordDisplayComponent1 extends JPanel implements DisplayComponent, IntervalUpdate, KeyListener, ComponentListener{
 	
 	private boolean started = false;
 	
@@ -42,8 +49,8 @@ public class WordDisplayComponent1 extends JPanel implements DisplayComponent, I
     
     public WordDisplayComponent1(){
     	this.addComponentListener(this);
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-    	manager.addKeyEventDispatcher(this);
+    	this.addKeyListener(this);
+    	this.setFocusable(true);
     }
     
 	@Override
@@ -59,18 +66,6 @@ public class WordDisplayComponent1 extends JPanel implements DisplayComponent, I
 	@Override
 	public void setClientTypingLogic(TypingLogic tl) {
 		this.tl = tl;
-	}
-
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent e) {
-		if(e.getID() == KeyEvent.KEY_TYPED && started){
-			String input = Character.toString(e.getKeyChar());
-			if(input.length() > 0){
-				tl.addInput(input);
-				this.repaint();
-			}
-		}
-		return false;
 	}
 	
 	@Override
@@ -118,16 +113,33 @@ public class WordDisplayComponent1 extends JPanel implements DisplayComponent, I
         this.xPadding = (int)(width*0.1);
         this.currentWordX = xPadding;
         this.textWidth = width-(2*xPadding);
+        this.requestFocus();
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		
+		this.requestFocus();
 	}
 
 	@Override
 	public void update() {
 		repaint();
 	}
-	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		if(started){
+			String input = Character.toString(e.getKeyChar());
+			if(input.length() > 0){
+				tl.addInput(input);
+				this.repaint();
+			}
+		}
+	}
 }

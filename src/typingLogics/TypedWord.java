@@ -1,5 +1,12 @@
 package typingLogics;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 public class TypedWord {
 	private double time;
 	private int correctChars;

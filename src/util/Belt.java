@@ -1,5 +1,12 @@
 package util;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 import java.util.function.Consumer;
 
 public class Belt<T> {

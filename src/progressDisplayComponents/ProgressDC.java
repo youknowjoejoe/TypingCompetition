@@ -1,5 +1,12 @@
 package progressDisplayComponents;
 
+/* 
+ * Joseph Sullivan
+ * APCSA per. 3B
+ * May 2017
+ * 
+ */
+
 import javax.swing.JPanel;
 
 import core.DisplayComponent;
