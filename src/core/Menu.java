@@ -55,6 +55,7 @@ public class Menu implements ActionListener{
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 	    
+	    JLabel instructions = new JLabel("Press buttons from each row to select that option for the typing test. To start the typing test, press start.");
 	    JPanel typingLogicsPanel = createOptionPanel(typingLogicsOptions);
 	    JPanel progressDisplaysPanel = createOptionPanel(progressDisplayOptions);
 	    JPanel wordDisplaysPanel = createOptionPanel(wordDisplayOptions);
@@ -69,6 +70,7 @@ public class Menu implements ActionListener{
 	    wordDisplaysPanel.setAlignmentX(0);
 	    startPanel.setAlignmentX(0.5f);
 	    
+	    panel.add(instructions);
 	    panel.add(typingLogicsPanel);
 	    panel.add(progressDisplaysPanel);
 	    panel.add(wordDisplaysPanel);
