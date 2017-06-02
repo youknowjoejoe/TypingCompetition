@@ -3,7 +3,7 @@ package progressDisplayComponents;
 /* 
  * Joseph Sullivan
  * APCSA per. 3B
- * May 2017
+ * June 2017
  * 
  */
 
@@ -18,8 +18,8 @@ public class ProgressDC implements DisplayComponent, IntervalUpdate{
 	private ProgressDCPanel panel;
 	private TypingLogic tl;
 	
-	public ProgressDC(){
-		panel = new ProgressDCPanel();
+	public ProgressDC(ProgressDCPanel panel){
+		this.panel = panel;
 	}
 	
 	@Override

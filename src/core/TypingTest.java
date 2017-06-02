@@ -3,36 +3,22 @@ package core;
 /* 
  * Joseph Sullivan
  * APCSA per. 3B
- * May 2017
+ * June 2017
  * 
  */
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MainPanel extends JPanel {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2949687444255909471L;
+public class TypingTest extends JPanel {
 	
 	private DisplayComponent[] dcs;
 	private TypingLogic tl;
-	private boolean running = true;
 	
-	private double dt;
-	
-	public MainPanel(int width, int height, DisplayComponent progressDisplay, DisplayComponent wordDisplay, TypingLogic tl){
-		this(width,height,progressDisplay,wordDisplay,tl,1.0/60.0);
-	}
-	
-	public MainPanel(int width, int height, DisplayComponent progressDisplay, DisplayComponent wordDisplay, TypingLogic tl, double dt){
-		this.dt = dt;
+	public TypingTest(int width, int height, DisplayComponent progressDisplay, DisplayComponent wordDisplay, TypingLogic tl){
 		
 		dcs = new DisplayComponent[2];
 		dcs[0] = progressDisplay;
@@ -58,7 +44,17 @@ public class MainPanel extends JPanel {
 		this.add(bottom);
 		
 		this.initializeDisplayComponents();
+		
+		JFrame frame = new JFrame("Typing Test");
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setVisible(true);
+		frame.add(this);
+		frame.setVisible(true);
+		frame.pack();
+		frame.setVisible(true);
 	}
+	
 	private void initializeDisplayComponents() {
 		for(DisplayComponent dc: dcs){
 			dc.setClientTypingLogic(tl);

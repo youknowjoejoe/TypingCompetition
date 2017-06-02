@@ -3,7 +3,7 @@ package typingLogics;
 /* 
  * Joseph Sullivan
  * APCSA per. 3B
- * May 2017
+ * June 2017
  * 
  */
 
@@ -37,12 +37,11 @@ public class StandardTypingLogic implements TypingLogic, ActionListener{
 	private boolean finished = false;
 	
 	
-	public StandardTypingLogic(){
+	public StandardTypingLogic(WordList wl){
 		this(
-				//new LoopingTest[]{LoopingTest.standard,LoopingTest.rickAstley,LoopingTest.taleOfTwoCities,LoopingTest.subliminalMessage}[(int)(Math.random()*4)],
-				LoopingTest.standard,
+				wl,
 				0.1,
-				30.0
+				60.0
 			);
 	}
 	

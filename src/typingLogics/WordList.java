@@ -3,7 +3,7 @@ package typingLogics;
 /* 
  * Joseph Sullivan
  * APCSA per. 3B
- * May 2017
+ * June 2017
  * 
  */
 

@@ -3,7 +3,7 @@ package wordDisplayComponents;
 /* 
  * Joseph Sullivan
  * APCSA per. 3B
- * May 2017
+ * June 2017
  * 
  */
 
@@ -11,8 +11,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
